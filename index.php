@@ -46,7 +46,7 @@ $result = $conn->query($query);
     <header>
         <nav class="w-full flexbg-secondary2 bg-opacity-30 items-center px-64 smx:px-4 p-4">
             <!-- logo -->
-            <a href="" class="flex items-end gap-3">
+            <a href="index.php" class="flex items-end gap-3">
                 <div class="bg-stone-100 p-1 rounded-md">
                     <svg id="logo_os" data-name="logo os" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 35.037 30.041">
