@@ -1,5 +1,5 @@
 <?php 
-$conn = new mysqli("localhost", "root", "", "bimajaya_dataset");
+$conn = new mysqli("labeling.data.bimajaya.co.id", "root", "", "bimajaya_dataset");
 
 // Periksa koneksi
 if ($conn->connect_error) {
