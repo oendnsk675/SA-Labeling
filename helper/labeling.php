@@ -9,7 +9,7 @@ if (isset($_POST['id']) && isset($_POST['label'])) {
 }
 
 // Perintah SQL UPDATE
-$updateQuery = "UPDATE data SET labeled = ? WHERE id = ?";
+$updateQuery = "UPDATE data SET label = ? , labeled = ? WHERE id = ?";
 
 // Menyiapkan pernyataan SQL dengan menggunakan prepared statement
 $stmt = $conn->prepare($updateQuery);
@@ -19,7 +19,7 @@ if ($stmt === false) {
 }
 
 // Mengikat parameter ke prepared statement
-$stmt->bind_param("ii", $label, $id);
+$stmt->bind_param("iii", $label, $label, $id);
 
 $msg = "";
 // Melakukan eksekusi pernyataan SQL UPDATE
@@ -36,8 +36,5 @@ $conn->close();
 // Mengirimkan data dalam bentuk JSON
 header('Content-Type: application/json');
 echo json_encode($msg);
-
-
-
 
 ?>
