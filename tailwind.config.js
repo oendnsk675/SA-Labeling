@@ -13,7 +13,6 @@ module.exports = {
       screens: {
         xsm: { max: "383px" },
         smx: { max: "530px" },
-        sm: "640px",
       },
     },
     fontWeight: {

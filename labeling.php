@@ -37,6 +37,15 @@ $result = $stmt->get_result();
 
 $data = mysqli_fetch_assoc($result);
 
+if (!$data) {
+    // Jika data tidak ditemukan, increment id_data dan redirect
+    $newIdData = $id_data + 1;
+    $newUrl = "labeling.php?sheet_number=$sheet_number&id_data=$newIdData";
+    header("Location: $newUrl");
+    exit();
+}
+
+
 ?>
 
 <!doctype html>
@@ -60,9 +69,24 @@ $data = mysqli_fetch_assoc($result);
 
 <body class="bg-slate-900 h-full relative pb-8">
     <header>
-        <nav class="w-full flexbg-secondary2 bg-opacity-30 items-center px-64 smx:px-4 p-4">
+        <nav class="w-full flex bg-opacity-30 justify-between items-center px-64 smx:px-4 p-4">
+            <!-- btn back -->
+            <a href="index.php" id="back-page" class="flex sm:hidden items-center font-semibold text-white text-sm md:text-base">
+                <svg width="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M15 7L10 12L15 17" stroke="#e3e3e3" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </g>
+                </svg>
+
+                <span class="">Back</span>
+            </a>
+            <!-- btn back -->
+            
             <!-- logo -->
-            <a href="" class="flex items-end gap-3">
+            <a href="" class="flex items-end gap-3 smx:hidden">
                 <div class="bg-stone-100 p-1 rounded-md">
                     <svg id="logo_os" data-name="logo os" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 35.037 30.041">
@@ -96,12 +120,8 @@ $data = mysqli_fetch_assoc($result);
         <!-- info metadata -->
         <div class="w-full flex justify-between items-center gap-3 mb-4">
 
-            <!-- id text -->
-            <input type="hidden" id="id_text" value="<?= $data['id'] ?>">
-            <!-- id text -->
-        
             <!-- btn back -->
-            <a href="index.php" id="back-page" class="flex items-center font-semibold text-white text-sm md:text-base">
+            <a href="index.php" id="back-page" class="flex smx:hidden items-center font-semibold text-white text-sm md:text-base">
                 <svg width="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -115,20 +135,30 @@ $data = mysqli_fetch_assoc($result);
             </a>
             <!-- btn back -->
 
-            <div class="flex gap-2">
-                <select id="id_data" onchange="" class="bg-slate-500 w-10 md:w-fit font-semibold bg-opacity-20 border rounded p-1 text-sm md:text-base md:p-2 md:px-3 text-slate-50" name="id" id="id">
-                    <option value="" disabled>Chose Item</option>
-                    <?php for ($i=$start; $i <= $end; $i++):?>
-                        <option class="text-slate-900" <?= $data['id'] == $i ? 'selected' : '' ;?> value="<?= $i ?>"><?= $i ?></option>
-                    <?php endfor;?>
-                </select>
-                <span class="bg-slate-500 font-semibold bg-opacity-20 border rounded p-1 text-sm md:text-base md:p-2 md:px-3 text-slate-50">
-                    Sheet : <?= $sheet_number ?>
-                </span>
-                <span class="bg-slate-500 font-semibold bg-opacity-20 border rounded p-1 text-sm md:text-base md:p-2 md:px-3 text-green-500">
-                    Data : <span class="total_data">?</span> / <span class="labeled">?</span>
-                </span>
+            <!-- id text -->
+            <input type="hidden" id="id_text" value="<?= $data['id'] ?>">
+            <!-- id text -->
+
+            <div class="smx:w-full flex smx:justify-between gap-2">
+                <div class="flex gap-2 smx:flex-row-reverse">
+                    <select id="id_data" onchange="" class="bg-slate-500 w-10 md:w-fit font-semibold bg-opacity-20 border rounded p-1 text-sm md:text-base md:p-2 md:px-3 text-slate-50" name="id" id="id">
+                        <option value="" disabled>Chose Item</option>
+                        <?php for ($i=$start; $i <= $end; $i++):?>
+                            <option class="text-slate-900" <?= $data['id'] == $i ? 'selected' : '' ;?> value="<?= $i ?>"><?= $i ?></option>
+                        <?php endfor;?>
+                    </select>
+                    <span class="bg-slate-500 font-semibold bg-opacity-20 border rounded p-1 text-sm md:text-base md:p-2 md:px-3 text-slate-50">
+                        Sheet : <?= $sheet_number ?>
+                    </span>
+                    <span class="bg-slate-500 font-semibold bg-opacity-20 border rounded p-1 text-sm md:text-base md:p-2 md:px-3 text-green-500">
+                        Data : <span class="total_data">?</span> / <span class="labeled">?</span>
+                    </span>
+                </div>
+                <button onclick="remove()" class="p-1 border rounded bg-slate-50 bg-opacity-20 hover:bg-opacity-80">
+                    <svg width="21px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 6.38597C3 5.90152 3.34538 5.50879 3.77143 5.50879L6.43567 5.50832C6.96502 5.49306 7.43202 5.11033 7.61214 4.54412C7.61688 4.52923 7.62232 4.51087 7.64185 4.44424L7.75665 4.05256C7.8269 3.81241 7.8881 3.60318 7.97375 3.41617C8.31209 2.67736 8.93808 2.16432 9.66147 2.03297C9.84457 1.99972 10.0385 1.99986 10.2611 2.00002H13.7391C13.9617 1.99986 14.1556 1.99972 14.3387 2.03297C15.0621 2.16432 15.6881 2.67736 16.0264 3.41617C16.1121 3.60318 16.1733 3.81241 16.2435 4.05256L16.3583 4.44424C16.3778 4.51087 16.3833 4.52923 16.388 4.54412C16.5682 5.11033 17.1278 5.49353 17.6571 5.50879H20.2286C20.6546 5.50879 21 5.90152 21 6.38597C21 6.87043 20.6546 7.26316 20.2286 7.26316H3.77143C3.34538 7.26316 3 6.87043 3 6.38597Z" fill="#df5858"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M11.5956 22.0001H12.4044C15.1871 22.0001 16.5785 22.0001 17.4831 21.1142C18.3878 20.2283 18.4803 18.7751 18.6654 15.8686L18.9321 11.6807C19.0326 10.1037 19.0828 9.31524 18.6289 8.81558C18.1751 8.31592 17.4087 8.31592 15.876 8.31592H8.12404C6.59127 8.31592 5.82488 8.31592 5.37105 8.81558C4.91722 9.31524 4.96744 10.1037 5.06788 11.6807L5.33459 15.8686C5.5197 18.7751 5.61225 20.2283 6.51689 21.1142C7.42153 22.0001 8.81289 22.0001 11.5956 22.0001ZM10.2463 12.1886C10.2051 11.7548 9.83753 11.4382 9.42537 11.4816C9.01321 11.525 8.71251 11.9119 8.75372 12.3457L9.25372 17.6089C9.29494 18.0427 9.66247 18.3593 10.0746 18.3159C10.4868 18.2725 10.7875 17.8856 10.7463 17.4518L10.2463 12.1886ZM14.5746 11.4816C14.9868 11.525 15.2875 11.9119 15.2463 12.3457L14.7463 17.6089C14.7051 18.0427 14.3375 18.3593 13.9254 18.3159C13.5132 18.2725 13.2125 17.8856 13.2537 17.4518L13.7537 12.1886C13.7949 11.7548 14.1625 11.4382 14.5746 11.4816Z" fill="#df5858"></path> </g></svg>
+                </button>
             </div>
+
         </div>
         <!-- info metadata -->
 
@@ -271,6 +301,29 @@ $data = mysqli_fetch_assoc($result);
         window.location.href = currentUrl;
     });
 
+    const remove = function () {
+        $.ajax({
+            url: './helper/remove.php', // Ganti dengan lokasi file PHP kamu
+            type: 'GET', // Menggunakan metode POST
+            data: { id: id_text}, // Mengirim id dan label sebagai data POST
+            dataType: 'json',
+            beforeSend: function() {
+                // Callback sebelum permintaan dikirim
+                // Kamu dapat menambahkan logika tambahan di sini jika diperlukan
+                $(".btn-labeling").prop("disabled", true).addClass("opacity-40 cursor-progress");
+                $("#back-page").prop('href', 'javascript:void(0)').addClass("opacity-40 cursor-progress");
+            },
+            error: function(xhr, status, error) {
+                console.error(status + ': ' + error);
+            },
+            complete: function() {
+                // Callback setelah permintaan selesai (baik berhasil maupun gagal)
+                // Mengaktifkan kembali tombol dan menghapus kelas "progress"
+                location.reload();
+            }
+        });
+    }
+
     const goto = function (id, type_) {
         // Mendapatkan nilai terpilih dari elemen select
         let currentId = id_text;
@@ -314,10 +367,6 @@ $data = mysqli_fetch_assoc($result);
                     // Kamu dapat menambahkan logika tambahan di sini jika diperlukan
                     $(".btn-labeling").prop("disabled", true).addClass("opacity-40 cursor-progress");
                     $("#back-page").prop('href', 'javascript:void(0)').addClass("opacity-40 cursor-progress");
-                },
-                success: function(data) {
-                    // Data adalah respons JSON dari PHP
-                    console.log(data); // Lakukan sesuatu dengan data JSON
                 },
                 error: function(xhr, status, error) {
                     // console.error(status + ': ' + error);

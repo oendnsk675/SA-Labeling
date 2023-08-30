@@ -5,7 +5,7 @@ require 'database/conn.php';
 if (isset($_GET['sheet_number'])) {
     $sheet_number = $_GET['sheet_number'];
 }else {
-    die("Sheet Number Not Defined.");
+    die("Parameter not valid.");
 }
 
 $query = "SELECT
