@@ -71,7 +71,7 @@ if (!$data) {
     <header>
         <nav class="w-full flex bg-opacity-30 justify-between items-center px-64 smx:px-4 p-4">
             <!-- btn back -->
-            <a href="index.php" id="back-page" class="flex sm:hidden items-center font-semibold text-white text-sm md:text-base">
+            <a href="index.php" id="back-page" class="flex md:hidden items-center font-semibold text-white text-sm md:text-base">
                 <svg width="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -86,7 +86,7 @@ if (!$data) {
             <!-- btn back -->
             
             <!-- logo -->
-            <a href="" class="flex items-end gap-3 smx:hidden">
+            <a href="" class="flex items-end gap-3 sm:hidden">
                 <div class="bg-stone-100 p-1 rounded-md">
                     <svg id="logo_os" data-name="logo os" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 35.037 30.041">
@@ -119,21 +119,6 @@ if (!$data) {
 
         <!-- info metadata -->
         <div class="w-full flex justify-between items-center gap-3 mb-4">
-
-            <!-- btn back -->
-            <a href="index.php" id="back-page" class="flex smx:hidden items-center font-semibold text-white text-sm md:text-base">
-                <svg width="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <path d="M15 7L10 12L15 17" stroke="#e3e3e3" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round"></path>
-                    </g>
-                </svg>
-
-                <span class="">Back</span>
-            </a>
-            <!-- btn back -->
 
             <!-- id text -->
             <input type="hidden" id="id_text" value="<?= $data['id'] ?>">

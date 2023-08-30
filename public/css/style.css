@@ -930,6 +930,10 @@ video {
     margin-top: 2rem;
   }
 
+  .md\:hidden {
+    display: none;
+  }
+
   .md\:h-56 {
     height: 14rem;
   }
